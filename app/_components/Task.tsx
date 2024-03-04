@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { onDeleteTask } from "@/utils/actions";
+import { onChangeTaskStatus, onDeleteTask } from "@/utils/actions";
 import { XIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ const Task = ({
   const { pending } = useFormStatus();
 
   const onDelete = async (formData: FormData) => {
+    // TODO:I don't know how to add optimistic removal of task
     const promise = onDeleteTask(formData);
 
     toast.promise(promise, {

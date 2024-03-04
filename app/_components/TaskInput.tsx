@@ -18,7 +18,11 @@ const TaskInput = ({
   const ref = useRef<HTMLFormElement>(null);
 
   const onSubmit = async (formData: FormData) => {
+    //Resetting form
     ref.current?.reset();
+
+    // adding optimistic task so user doesn't notice network latency
+    // if task is failed to add in server it automatically handle removing from frontend
     addOptimisticTask({
       created_at: "",
       updated_at: "",
@@ -26,6 +30,9 @@ const TaskInput = ({
       name: formData.get("name") as string,
       is_done: false,
     });
+
+    // i just learn about very good way to
+    // handle loading,success,error notification through toast
     const promise = onCreateTask(formData);
 
     toast.promise(promise, {

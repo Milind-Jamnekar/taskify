@@ -11,6 +11,7 @@ interface TasksProps {
 type Task = Database["public"]["Tables"]["taskify"]["Row"];
 
 const TaskApp = ({ tasks }: TasksProps) => {
+  // this hook all handled optimistic feature of form and network
   const [optimisticTask, addOptimisticTask] = useOptimistic(
     tasks,
     (state, newTodo: Task) => {

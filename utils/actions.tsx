@@ -8,6 +8,7 @@ async function onCreateTask(formData: FormData) {
 
   try {
     await supabase.from("taskify").insert({ name: taskName, is_done: false });
+
     revalidatePath("/");
     return { message: "Task created successfully" };
   } catch (error) {
@@ -26,4 +27,14 @@ async function onDeleteTask(formData: FormData) {
     return { message: "Failed to delete task" };
   }
 }
-export { onCreateTask, onDeleteTask };
+
+async function onChangeTaskStatus(formData: FormData) {
+  const id = formData.get("id");
+  const isDone = formData.get("isDone");
+  console.log(isDone, id);
+
+  // try {
+  //   await supabase.from("taskify").update({ is_done: isDone });
+  // } catch (error) {}
+}
+export { onCreateTask, onDeleteTask, onChangeTaskStatus };
