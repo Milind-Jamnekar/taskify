@@ -16,9 +16,7 @@ async function onCreateTask(formData: FormData) {
   }
 }
 
-async function onDeleteTask(formData: FormData) {
-  const id = formData.get("id") as string;
-
+async function onDeleteTask(id: number) {
   try {
     await supabase.from("taskify").delete().eq("id", id);
     revalidatePath("/");
@@ -28,13 +26,8 @@ async function onDeleteTask(formData: FormData) {
   }
 }
 
-async function onChangeTaskStatus(formData: FormData) {
-  const id = formData.get("id");
-  const isDone = formData.get("isDone");
-  console.log(isDone, id);
-
-  // try {
-  //   await supabase.from("taskify").update({ is_done: isDone });
-  // } catch (error) {}
+async function onChangeTaskStatus(checked: boolean, id: number) {
+  await supabase.from("taskify").update({ is_done: checked }).eq("id", id);
+  revalidatePath("/");
 }
 export { onCreateTask, onDeleteTask, onChangeTaskStatus };
