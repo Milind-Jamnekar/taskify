@@ -1,6 +1,7 @@
 import TaskInput from "./_components/TaskInput";
 import Task from "@/app/_components/Task";
 import prisma from "@/prisma/db";
+import TaskList from "./_components/TaskList";
 
 export default async function Home() {
   let tasks = await prisma.tasks.findMany();
@@ -12,15 +13,7 @@ export default async function Home() {
       </div>
 
       <div className=" md:max-w-xl p-6">
-        <TaskInput />
-        {tasks.map((task) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            name={task.name}
-            isDone={task.isDone}
-          />
-        ))}
+        <TaskList tasks={tasks} />
       </div>
     </main>
   );
