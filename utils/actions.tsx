@@ -1,14 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import supabase from "./supabase";
+import prisma from "@/prisma/db";
 
 async function onCreateTask(formData: FormData) {
   const taskName = formData.get("name") as string;
 
   try {
-    await supabase.from("taskify").insert({ name: taskName, is_done: false });
-
+    await prisma.tasks.create({ data: { name: taskName, isDone: false } });
     revalidatePath("/");
     return { message: "Task created successfully" };
   } catch (error) {
@@ -18,7 +17,7 @@ async function onCreateTask(formData: FormData) {
 
 async function onDeleteTask(id: number) {
   try {
-    await supabase.from("taskify").delete().eq("id", id);
+    await prisma.tasks.delete({ where: { id } });
     revalidatePath("/");
     return { message: "Task deleted successfully" };
   } catch (error) {
@@ -27,7 +26,7 @@ async function onDeleteTask(id: number) {
 }
 
 async function onChangeTaskStatus(checked: boolean, id: number) {
-  await supabase.from("taskify").update({ is_done: checked }).eq("id", id);
+  await prisma.tasks.update({ data: { isDone: checked }, where: { id } });
   revalidatePath("/");
 }
 export { onCreateTask, onDeleteTask, onChangeTaskStatus };
